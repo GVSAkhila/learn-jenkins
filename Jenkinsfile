@@ -7,10 +7,16 @@ pipeline {
         disableConcurrentBuilds()
     }
 
-    parameters  {
-     string(name: 'ENV', defaultValue: 'dev', description: 'Enter the environment name')
-     booleanParam(name: 'RUN_TESTS', defaultValue: true, description: 'Run tests?')
-     choice(name: 'DEPLOY_REGION', choices: ['us-east-1', 'eu-west-1', 'ap-south-1'], description: 'Select AWS region')
+parameters {
+        string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+
+        text(name: 'BIOGRAPHY', defaultValue: '', description: 'Enter some information about the person')
+
+        booleanParam(name: 'TOGGLE', defaultValue: true, description: 'Toggle this value')
+
+        choice(name: 'CHOICE', choices: ['One', 'Two', 'Three'], description: 'Pick something')
+
+        password(name: 'PASSWORD', defaultValue: 'SECRET', description: 'Enter a password')
     }
     stages {
         stage('Build') {
@@ -31,15 +37,15 @@ pipeline {
             }
         }
     }
-    stages {
-        stage('Print Params') {
-            steps {
-                echo "Environment: ${params.ENV}"
-                echo "Run Tests: ${params.RUN_TESTS}"
-                echo "Deploy Region: ${params.DEPLOY_REGION}"
+   stage('Print Params'){
+            steps{
+                echo "Hello ${params.PERSON}"
+                echo "Biography: ${params.BIOGRAPHY}"
+                echo "Toggle: ${params.TOGGLE}"
+                echo "Choice: ${params.CHOICE}"
+                echo "Password: ${params.PASSWORD}"  
             }
         }
-    }
 
 
     post {
