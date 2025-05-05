@@ -6,6 +6,12 @@ pipeline {
         timeout(time: 10, unit: 'SECONDS')
         disableConcurrentBuilds()
     }
+
+    parameters  {
+     string(name: 'ENV', defaultValue: 'dev', description: 'Enter the environment name')
+     booleanParam(name: 'RUN_TESTS', defaultValue: true, description: 'Run tests?')
+     choice(name: 'DEPLOY_REGION', choices: ['us-east-1', 'eu-west-1', 'ap-south-1'], description: 'Select AWS region')
+    }
     stages {
         stage('Build') {
             steps {
@@ -25,6 +31,16 @@ pipeline {
             }
         }
     }
+    stages {
+        stage('Print Params') {
+            steps {
+                echo "Environment: ${params.ENV}"
+                echo "Run Tests: ${params.RUN_TESTS}"
+                echo "Deploy Region: ${params.DEPLOY_REGION}"
+            }
+        }
+    }
+
 
     post {
         always {
