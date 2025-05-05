@@ -20,9 +20,6 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'echo Building'
-                //sh 'sleep 10'
-
-
             }
         }
 
@@ -38,26 +35,28 @@ pipeline {
             }
         }
 
-        stage('Print Params'){
-            steps{
+        stage('Print Params') {
+            steps {
                 echo "Hello ${params.PERSON}"
                 echo "Biography: ${params.BIOGRAPHY}"
                 echo "Toggle: ${params.TOGGLE}"
                 echo "Choice: ${params.CHOICE}"
-                echo "Password: ${params.PASSWORD}"  
+                echo "Password: ${params.PASSWORD}"  // Consider masking in real use
             }
         }
-        stage('Approval'){
-            input {
-                message "Should we continue?"
-                ok "Yes, we should."
-                submitter "alice,bob"
-                parameters {
-                    string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
-                }
-            }
+
+        stage('Approval') {
             steps {
-                echo "Hello, ${PERSON}, nice to meet you."
+                script {
+                    def inputParams = input(
+                        id: 'UserInput', message: 'Should we continue?', ok: 'Yes, we should.',
+                        submitter: 'alice,bob',
+                        parameters: [
+                            string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+                        ]
+                    )
+                    echo "Hello, ${inputParams.PERSON}, nice to meet you."
+                }
             }
         }
     }
