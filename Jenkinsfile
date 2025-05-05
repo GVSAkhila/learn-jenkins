@@ -21,12 +21,12 @@ pipeline {
 
 post {
     always {
-        echo  "this section run always"
+        echo  'this section run always'
     }
     success {
-        echo  "this scection run when pipline sucess"
+        echo  'this scection run when pipline sucess'
     }
     failure {
-        echo  "this section run when pipeline fail"
+        echo  'this section run when pipeline fail'
     }
 }
